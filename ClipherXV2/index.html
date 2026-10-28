@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CipherX — Message Encryption & Decryption Simulator">
+  <title>CipherX — Message Encryption & Decryption Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="CipherX home">
+        <span class="brand-mark">CX</span>
+        <span>
+          <strong>CipherX</strong>
+          <small>Transform. Share. Decrypt.</small>
+        </span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#workspace">Workspace</a>
+        <a href="#algorithms">Algorithms</a>
+        <a href="#history">History</a>
+        <a href="#about">About</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">☼</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow"><span class="pulse-dot"></span> Browser-only cryptography lab</div>
+          <h1>Message encryption,<br><span>made visible.</span></h1>
+          <p class="hero-copy">
+            Explore 10 reversible cipher transformations and see exactly how plaintext
+            becomes ciphertext before it reaches User B.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#workspace">Open Workspace <span>→</span></a>
+            <button class="btn btn-secondary" id="heroTestBtn" type="button">Generate Test Message</button>
+          </div>
+          <div class="hero-stats" aria-label="Project facts">
+            <div><strong>10</strong><span>Algorithms</span></div>
+            <div><strong>100%</strong><span>Client-side</span></div>
+            <div><strong>0</strong><span>Dependencies</span></div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="cipher-orb">
+            <div class="orb-lock">⌁</div>
+            <div class="orb-code">01001100<br>10110101<br>00110110</div>
+          </div>
+          <div class="floating-chip chip-a">PLAINTEXT</div>
+          <div class="floating-chip chip-b">CIPHERTEXT</div>
+          <div class="floating-chip chip-c">10 MODES</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="flow-section" aria-labelledby="flowTitle">
+      <div class="container">
+        <div class="section-heading compact">
+          <span class="section-kicker">THE FLOW</span>
+          <h2 id="flowTitle">One message. Two users. One shared algorithm.</h2>
+        </div>
+        <div class="flow">
+          <div class="flow-node"><span>01</span><strong>User A</strong><small>Plaintext</small></div>
+          <div class="flow-line"></div>
+          <div class="flow-node active"><span>02</span><strong>Algorithm</strong><small>Transform</small></div>
+          <div class="flow-line"></div>
+          <div class="flow-node"><span>03</span><strong>Ciphertext</strong><small>Copy / Share</small></div>
+          <div class="flow-line"></div>
+          <div class="flow-node"><span>04</span><strong>User B</strong><small>Same algorithm</small></div>
+          <div class="flow-line"></div>
+          <div class="flow-node"><span>05</span><strong>Plaintext</strong><small>Recovered</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace-section" id="workspace" aria-labelledby="workspaceTitle">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">INTERACTIVE LAB</span>
+          <h2 id="workspaceTitle">Encryption Workspace</h2>
+          <p>Run the complete sender → receiver journey directly in your browser.</p>
+        </div>
+
+        <div class="workspace-grid">
+          <article class="panel sender-panel">
+            <div class="panel-top">
+              <div class="user-badge sender">A</div>
+              <div>
+                <span class="panel-kicker">SENDER</span>
+                <h3>User A — Encrypt Message</h3>
+              </div>
+            </div>
+
+            <label for="plainText">Message input</label>
+            <div class="textarea-wrap">
+              <textarea id="plainText" maxlength="5000" placeholder="Enter your message here..." spellcheck="true"></textarea>
+              <span class="counter" id="plainCount">Characters: 0</span>
+            </div>
+
+            <div class="field-row">
+              <div class="field grow">
+                <label for="encryptAlgorithm">Encryption algorithm</label>
+                <select id="encryptAlgorithm"></select>
+              </div>
+              <button class="icon-btn" id="randomMessageBtn" type="button" title="Generate a test message">↻</button>
+            </div>
+
+            <div class="algorithm-mini" id="encryptMiniInfo"></div>
+
+            <button class="btn btn-primary btn-wide" id="encryptBtn" type="button">
+              <span>🔒</span> Encrypt Message
+            </button>
+
+            <div class="output-block">
+              <div class="output-head">
+                <label for="encryptedText">Encrypted Message</label>
+                <span class="status-badge" id="encryptStatus">Ready</span>
+              </div>
+              <textarea id="encryptedText" readonly placeholder="Encrypted output will appear here..."></textarea>
+              <div class="output-actions">
+                <button class="btn btn-ghost" id="copyEncryptedBtn" type="button">Copy</button>
+                <button class="btn btn-ghost danger-text" id="clearEncryptedBtn" type="button">Clear</button>
+                <button class="btn btn-secondary push-right" id="sendToBBtn" type="button">⇄ Send to User B</button>
+              </div>
+            </div>
+          </article>
+
+          <div class="center-bridge" aria-hidden="true">
+            <div class="bridge-arrow">→</div>
+            <span>SHARE</span>
+            <div class="bridge-arrow">→</div>
+          </div>
+
+          <article class="panel receiver-panel">
+            <div class="panel-top">
+              <div class="user-badge receiver">B</div>
+              <div>
+                <span class="panel-kicker">RECEIVER</span>
+                <h3>User B — Decrypt Message</h3>
+              </div>
+            </div>
+
+            <label for="cipherText">Encrypted message input</label>
+            <div class="textarea-wrap">
+              <textarea id="cipherText" maxlength="20000" placeholder="Paste encrypted message here..."></textarea>
+              <span class="counter" id="cipherCount">Characters: 0</span>
+            </div>
+
+            <div class="field-row">
+              <div class="field grow">
+                <label for="decryptAlgorithm">Decryption algorithm</label>
+                <select id="decryptAlgorithm"></select>
+              </div>
+            </div>
+
+            <div class="algorithm-mini" id="decryptMiniInfo"></div>
+
+            <button class="btn btn-success btn-wide" id="decryptBtn" type="button">
+              <span>🔓</span> Decrypt Message
+            </button>
+
+            <div class="output-block">
+              <div class="output-head">
+                <label for="decryptedText">Decrypted Message</label>
+                <span class="status-badge" id="decryptStatus">Waiting</span>
+              </div>
+              <textarea id="decryptedText" readonly placeholder="Original message will appear here..."></textarea>
+              <div class="output-actions">
+                <button class="btn btn-ghost" id="copyDecryptedBtn" type="button">Copy</button>
+                <button class="btn btn-ghost danger-text" id="clearDecryptedBtn" type="button">Clear</button>
+                <button class="btn btn-ghost push-right" id="clearAllBtn" type="button">Clear All</button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="verification-row">
+          <div>
+            <strong>Round-trip verification</strong>
+            <span>Encrypt the current plaintext, decrypt it, and compare both strings exactly.</span>
+          </div>
+          <button class="btn btn-secondary" id="verifyBtn" type="button">✓ Verify Cipher</button>
+          <div class="verify-result" id="verifyResult" role="status"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-section" id="algorithms" aria-labelledby="algorithmInfoTitle">
+      <div class="container info-grid">
+        <article class="panel algorithm-info-panel">
+          <div class="section-heading left">
+            <span class="section-kicker">ALGORITHM EXPLORER</span>
+            <h2 id="algorithmInfoTitle">Algorithm Information</h2>
+          </div>
+          <div class="algorithm-title">
+            <span class="number-pill" id="infoNumber">01</span>
+            <div>
+              <span class="panel-kicker" id="infoType">SUBSTITUTION</span>
+              <h3 id="infoName">Symbol Substitution Cipher</h3>
+            </div>
+          </div>
+          <p id="infoDescription"></p>
+          <div class="properties" id="infoProperties"></div>
+          <div class="formula" id="infoFormula"></div>
+        </article>
+
+        <article class="panel demo-panel">
+          <div class="panel-top simple">
+            <div>
+              <span class="panel-kicker">LIVE DEMONSTRATION</span>
+              <h3>How This Algorithm Works</h3>
+            </div>
+          </div>
+          <div class="demo-box">
+            <div class="demo-step"><span>INPUT</span><code id="demoInput">HELLO</code></div>
+            <div class="demo-arrow">↓</div>
+            <div class="demo-step"><span id="demoAlgorithmLabel">ALGORITHM</span><code id="demoOutput">...</code></div>
+            <div class="demo-arrow">↓</div>
+            <div class="demo-step"><span>DECRYPT</span><code id="demoRecovered">HELLO</code></div>
+          </div>
+          <p class="demo-note" id="demoNote">Change the algorithm to see a different reversible transformation.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="history-section" id="history" aria-labelledby="historyTitle">
+      <div class="container">
+        <div class="history-header">
+          <div class="section-heading left">
+            <span class="section-kicker">LOCAL STORAGE</span>
+            <h2 id="historyTitle">Encryption History</h2>
+            <p>Only ciphertext, algorithm and timestamp are stored in your browser.</p>
+          </div>
+          <button class="btn btn-ghost danger-text" id="clearHistoryBtn" type="button">Clear History</button>
+        </div>
+        <div class="history-list" id="historyList">
+          <div class="empty-state">
+            <span>◌</span>
+            <strong>No encryption history yet</strong>
+            <p>Encrypt a message and your recent ciphertext will appear here.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section" id="about">
+      <div class="container">
+        <div class="notice">
+          <div class="notice-icon">i</div>
+          <div>
+            <strong>Educational security notice</strong>
+            <p>
+              CipherX is an educational cipher simulator. The algorithms demonstrated here
+              are simplified and should not be used to protect real confidential information.
+              Caesar, substitution, fixed-key XOR and character-shift techniques are not modern secure encryption.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div><strong>CipherX</strong><span>Message Encryption & Decryption Simulator</span></div>
+      <span>Built with HTML5 · CSS3 · Vanilla JavaScript</span>
+    </div>
+  </footer>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+  <script src="script.js"></script>
+</body>
+</html>
